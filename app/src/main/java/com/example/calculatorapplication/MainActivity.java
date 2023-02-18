@@ -194,7 +194,14 @@ public class MainActivity extends AppCompatActivity {
         buttonBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                data = data.substring(0,data.length()-1);
+                if(data.length() >1)
+                {
+                    data = data.substring(0,data.length()-1);
+                }
+                else
+                {
+                    data="0";
+                }
                 solutionTv.setText(data);
             }
         });
