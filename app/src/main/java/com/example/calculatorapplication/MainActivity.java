@@ -194,7 +194,14 @@ public class MainActivity extends AppCompatActivity {
         buttonBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                data = data.substring(0,data.length()-1);
+                if(data.length() >1)
+                {
+                    data = data.substring(0,data.length()-1);
+                }
+                else
+                {
+                    data="";
+                }
                 solutionTv.setText(data);
             }
         });
@@ -206,15 +213,21 @@ public class MainActivity extends AppCompatActivity {
                 data = data.replaceAll("×", "*");
                 data = data.replaceAll("%", "/100");
                 data = data.replaceAll("÷", "/");
-                Context rhino = Context.enter();
-                rhino.setOptimizationLevel(-1);
+               String data_temp= data.replaceAll("(\\d+)\\^(\\d+)", "Math.pow($1, $2)"); //covert into pow(a,b)
+                try {
+                    Context rhino = Context.enter();
+                    rhino.setOptimizationLevel(-1);
 
-                String finalResult = "";
+                    String finalResult = "";
 
-                Scriptable scriptable = rhino.initStandardObjects();
-                finalResult = rhino.evaluateString(scriptable, data, "Javsscript", 1, null).toString();
+                    Scriptable scriptable = rhino.initStandardObjects();
+                    finalResult = rhino.evaluateString(scriptable, data_temp, "Javsscript", 1, null).toString();
+                    resultTv.setText(finalResult);
 
-                resultTv.setText(finalResult);
+                } catch(Exception e)
+                {
+                    resultTv.setText("ERROR LOGICAL");
+                }
 
             }
         });
